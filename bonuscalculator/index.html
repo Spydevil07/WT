@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html ng-app="bonusCalculatorApp">
+
+<head>
+  <title>Bonus Calculator</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+
+<body ng-controller="BonusController">
+  <h2>Bonus Calculator</h2>
+
+  <label for="salesAmount">Enter Sales Amount:</label>
+  <input type="number" ng-model="salesAmount" id="salesAmount" placeholder="Enter sales amount">
+
+  <button ng-click="calculateBonus()">Calculate Bonus</button>
+
+  <div ng-show="bonus !== null">
+    <p ng-if="bonus === 0">No bonus for sales up to $2000.</p>
+    <p ng-if="bonus === 5">5% bonus for sales between $2000 and $5000.</p>
+    <p ng-if="bonus === 10">10% bonus for sales over $5000.</p>
+  </div>
+
+  <script>
+    var app = angular.module('bonusCalculatorApp', []);
+
+    app.controller('BonusController', function ($scope) {
+      $scope.salesAmount = 0;
+      $scope.bonus = null;
+
+      $scope.calculateBonus = function () {
+        if ($scope.salesAmount <= 2000) {
+          $scope.bonus = 0;
+        } else if ($scope.salesAmount <= 5000) {
+          $scope.bonus = 5;
+        } else {
+          $scope.bonus = 10;
+        }
+      };
+    });
+  </script>
+</body>
+
+</html>

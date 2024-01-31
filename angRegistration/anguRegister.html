@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="registrationApp">
+<head>
+  <meta charset="UTF-8">
+  <title>Registration Form</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="RegistrationController">
+  <h2>Registration Form</h2>
+  
+  <form name="registrationForm" novalidate>
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" ng-model="user.username" 
+           ng-pattern="/^[a-zA-Z0-9_]*$/" ng-minlength="3" ng-maxlength="20" ng-required="true">
+    <div ng-messages="registrationForm.username.$error" ng-if="registrationForm.username.$touched">
+      <div ng-message="required">Username is required.</div>
+      <div ng-message="pattern">Invalid characters. Use only letters, numbers, and underscore.</div>
+      <div ng-message="minlength">Username should be at least 3 characters long.</div>
+      <div ng-message="maxlength">Username should not exceed 20 characters.</div>
+    </div>
+    
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" ng-model="user.password" ng-minlength="6" ng-maxlength="12" ng-required="true">
+    <div ng-messages="registrationForm.password.$error" ng-if="registrationForm.password.$touched">
+      <div ng-message="required">Password is required.</div>
+      <div ng-message="minlength">Password should be at least 6 characters long.</div>
+      <div ng-message="maxlength">Password should not exceed 12 characters.</div>
+    </div>
+    
+    <button type="submit" ng-disabled="registrationForm.$invalid" ng-click="submitForm()">Submit</button>
+  </form>
+</div>
+
+<script>
+  var app = angular.module('registrationApp', []);
+  
+  app.controller('RegistrationController', function($scope) {
+    $scope.user = {};
+    
+    $scope.submitForm = function() {
+      // Logic to handle form submission
+      console.log('Form submitted:', $scope.user);
+    };
+  });
+</script>
+
+</body>
+</html>

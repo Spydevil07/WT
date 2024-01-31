@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="collegeApp">
+<head>
+  <meta charset="UTF-8">
+  <title>College Admission Form</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="AdmissionController">
+  <h2>College Admission Form</h2>
+  
+  <form name="admissionForm" novalidate>
+    <label for="name">Full Name:</label>
+    <input type="text" id="name" name="name" ng-model="student.name" ng-required="true">
+    <div ng-messages="admissionForm.name.$error" ng-if="admissionForm.name.$touched">
+      <div ng-message="required">Full Name is required.</div>
+    </div>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" ng-model="student.email" ng-required="true">
+    <div ng-messages="admissionForm.email.$error" ng-if="admissionForm.email.$touched">
+      <div ng-message="required">Email is required.</div>
+      <div ng-message="email">Invalid email address.</div>
+    </div>
+
+    <label for="course">Course:</label>
+    <select id="course" name="course" ng-model="student.course" ng-required="true">
+      <option value="" disabled>Select a course</option>
+      <option value="Engineering">Engineering</option>
+      <option value="Computer Science">Computer Science</option>
+      <option value="Business Administration">Business Administration</option>
+    </select>
+    <div ng-messages="admissionForm.course.$error" ng-if="admissionForm.course.$touched">
+      <div ng-message="required">Course is required.</div>
+    </div>
+
+    <label for="marks">High School Marks (%):</label>
+    <input type="number" id="marks" name="marks" ng-model="student.marks" min="0" max="100" ng-required="true">
+    <div ng-messages="admissionForm.marks.$error" ng-if="admissionForm.marks.$touched">
+      <div ng-message="required">High School Marks are required.</div>
+      <div ng-message="min">Marks should be at least 0.</div>
+      <div ng-message="max">Marks should not exceed 100.</div>
+    </div>
+
+    <button type="button" ng-click="submitForm()" ng-disabled="admissionForm.$invalid">Submit</button>
+
+    <div ng-if="formSubmitted">
+      <h3>Admission Accepted!</h3>
+      <p>Name: {{ student.name }}</p>
+      <p>Email: {{ student.email }}</p>
+      <p>Course: {{ student.course }}</p>
+      <p>High School Marks: {{ student.marks }}%</p>
+    </div>
+  </form>
+</div>
+
+<script>
+  var app = angular.module('collegeApp', []);
+
+  app.controller('AdmissionController', function($scope) {
+    $scope.student = {};
+    $scope.formSubmitted = false;
+
+    $scope.submitForm = function() {
+      // Perform any additional logic before submitting, if needed
+
+      // Set formSubmitted to true to display the submitted information
+      $scope.formSubmitted = true;
+    };
+  });
+</script>
+
+</body>
+</html>

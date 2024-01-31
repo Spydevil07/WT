@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="studentApp">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Details</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+</head>
+<body>
+
+<div ng-controller="StudentController">
+  <h2>Student Details</h2>
+  
+  <form name="studentForm" novalidate>
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" ng-model="student.name" ng-required="true">
+    
+    <label for="class">Class:</label>
+    <input type="text" id="class" name="class" ng-model="student.class" ng-required="true">
+    
+    <label for="rollNo">Roll No:</label>
+    <input type="text" id="rollNo" name="rollNo" ng-model="student.rollNo" ng-required="true">
+    
+    <label for="marks">Marks (5 Subjects):</label>
+    <input type="number" ng-repeat="subject in subjects" ng-model="student.marks[subject]" min="0" max="100" required>
+    
+    <button type="button" ng-click="calculateResults()" ng-disabled="studentForm.$invalid">Calculate</button>
+    
+    <div ng-if="resultsCalculated">
+      <p>Total Marks: {{ student.totalMarks }}</p>
+      <p>Average Marks: {{ student.averageMarks.toFixed(2) }}</p>
+      <p ng-if="student.passed">Result: PASSED</p>
+      <p ng-if="!student.passed">Result: FAILED</p>
+    </div>
+  </form>
+</div>
+
+<script>
+  var app = angular.module('studentApp', []);
+
+  app.controller('StudentController', function($scope) {
+    $scope.subjects = ['Subject1', 'Subject2', 'Subject3', 'Subject4', 'Subject5'];
+
+    $scope.student = {
+      name: '',
+      class: '',
+      rollNo: '',
+      marks: {}
+    };
+
+    $scope.resultsCalculated = false;
+
+    $scope.calculateResults = function() {
+      $scope.student.totalMarks = 0;
+      $scope.student.passed = true;
+
+      for (var i = 0; i < $scope.subjects.length; i++) {
+        $scope.student.totalMarks += $scope.student.marks[$scope.subjects[i]] || 0;
+      }
+
+      $scope.student.averageMarks = $scope.student.totalMarks / $scope.subjects.length;
+
+      if ($scope.student.averageMarks < 40) {
+        $scope.student.passed = false;
+      }
+
+      $scope.resultsCalculated = true;
+    };
+  });
+</script>
+
+</body>
+</html>
